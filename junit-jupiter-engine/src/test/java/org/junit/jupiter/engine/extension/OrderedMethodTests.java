@@ -25,6 +25,7 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.MethodOrderer.Random;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,16 @@ class OrderedMethodTests extends AbstractJupiterTestEngineTests {
 
 	@Test
 	void orderAnnotation() {
-		ExecutionEventRecorder eventRecorder = executeTestsForClass(OrderAnnotationTestCase.class);
+		assertOrderAnnotationSupport(OrderAnnotationTestCase.class);
+	}
+
+	@Test
+	void orderAnnotationInNestedTestClass() {
+		assertOrderAnnotationSupport(OuterTestCase.class);
+	}
+
+	private void assertOrderAnnotationSupport(Class<?> testClass) {
+		ExecutionEventRecorder eventRecorder = executeTestsForClass(testClass);
 
 		assertEquals(callSequence.size(), eventRecorder.getTestStartedCount(), "# tests started");
 		assertEquals(callSequence.size(), eventRecorder.getTestSuccessfulCount(), "# tests succeeded");
@@ -175,6 +185,13 @@ class OrderedMethodTests extends AbstractJupiterTestEngineTests {
 		@DisplayName("test2")
 		@Order(2)
 		void ___() {
+		}
+	}
+
+	static class OuterTestCase {
+
+		@Nested
+		class NestedOrderAnnotationTestCase extends OrderAnnotationTestCase {
 		}
 	}
 
