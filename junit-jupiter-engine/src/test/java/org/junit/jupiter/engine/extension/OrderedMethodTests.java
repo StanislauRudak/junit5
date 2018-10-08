@@ -34,7 +34,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.engine.AbstractJupiterTestEngineTests;
 import org.junit.jupiter.engine.JupiterTestEngine;
-import org.junit.platform.engine.test.event.ExecutionEventRecorder;
+import org.junit.platform.testkit.ExecutionsResult;
 
 /**
  * Integration tests that verify support for custom test method execution order
@@ -55,10 +55,10 @@ class OrderedMethodTests extends AbstractJupiterTestEngineTests {
 
 	@Test
 	void alphanumeric() {
-		ExecutionEventRecorder eventRecorder = executeTestsForClass(AlphanumericTestCase.class);
+		ExecutionsResult executionsResult = executeTestsForClass(AlphanumericTestCase.class).getExecutionsResult();
 
-		assertEquals(callSequence.size(), eventRecorder.getTestStartedCount(), "# tests started");
-		assertEquals(callSequence.size(), eventRecorder.getTestSuccessfulCount(), "# tests succeeded");
+		assertEquals(callSequence.size(), executionsResult.getTestStartedCount(), "# tests started");
+		assertEquals(callSequence.size(), executionsResult.getTestSuccessfulCount(), "# tests succeeded");
 		assertThat(callSequence).containsExactly("$", "AAA", "ZZ_Top", "___", "a1", "a2", "b", "zzz");
 	}
 
@@ -73,10 +73,10 @@ class OrderedMethodTests extends AbstractJupiterTestEngineTests {
 	}
 
 	private void assertOrderAnnotationSupport(Class<?> testClass) {
-		ExecutionEventRecorder eventRecorder = executeTestsForClass(testClass);
+		ExecutionsResult executionsResult = executeTestsForClass(testClass).getExecutionsResult();
 
-		assertEquals(callSequence.size(), eventRecorder.getTestStartedCount(), "# tests started");
-		assertEquals(callSequence.size(), eventRecorder.getTestSuccessfulCount(), "# tests succeeded");
+		assertEquals(callSequence.size(), executionsResult.getTestStartedCount(), "# tests started");
+		assertEquals(callSequence.size(), executionsResult.getTestSuccessfulCount(), "# tests succeeded");
 		assertThat(callSequence).containsExactly("test1", "test2", "test3", "test4", "test5", "test6");
 	}
 
@@ -87,11 +87,11 @@ class OrderedMethodTests extends AbstractJupiterTestEngineTests {
 		for (int i = 0; i < 10; i++) {
 			callSequence.clear();
 
-			ExecutionEventRecorder eventRecorder = executeTestsForClass(RandomTestCase.class);
+			ExecutionsResult executionsResult = executeTestsForClass(RandomTestCase.class).getExecutionsResult();
 			uniqueSequences.add(callSequence.stream().collect(Collectors.joining(",")));
 
-			assertEquals(callSequence.size(), eventRecorder.getTestStartedCount(), "# tests started");
-			assertEquals(callSequence.size(), eventRecorder.getTestSuccessfulCount(), "# tests succeeded");
+			assertEquals(callSequence.size(), executionsResult.getTestStartedCount(), "# tests started");
+			assertEquals(callSequence.size(), executionsResult.getTestSuccessfulCount(), "# tests succeeded");
 		}
 
 		// We assume that at least 3 out of 10 are different...
