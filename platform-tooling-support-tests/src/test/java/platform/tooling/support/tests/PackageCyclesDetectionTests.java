@@ -53,6 +53,11 @@ class PackageCyclesDetectionTests {
 					"Adding edge 'org.junit.jupiter.engine.extension.ExtensionRegistry -> org.junit.jupiter.engine.Constants' failed."
 							+ " Cycle detected: From org.junit.jupiter.engine.extension"
 							+ " over [org.junit.jupiter.engine, org.junit.jupiter.engine.descriptor]"
+							+ " and org.junit.jupiter.engine.execution" + " back to org.junit.jupiter.engine.extension",
+
+					"Adding edge 'org.junit.jupiter.engine.extension.ScriptExecutionCondition -> org.junit.jupiter.engine.Constants' failed."
+							+ " Cycle detected: From org.junit.jupiter.engine.extension"
+							+ " over [org.junit.jupiter.engine, org.junit.jupiter.engine.descriptor]"
 							+ " and org.junit.jupiter.engine.execution"
 							+ " back to org.junit.jupiter.engine.extension"),
 					result.getOutputLines("cycles"));
